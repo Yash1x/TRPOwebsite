@@ -1,0 +1,29 @@
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Портфолио дизайнера{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <div class="logo">Designer Name</div>
+        <nav class="main-nav">
+            <a href="{% url 'home' %}">Работы</a>
+            <a href="{% url 'services' %}">Услуги</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        © {{ now|date:"Y" }} Designer Name
+    </div>
+</footer>
+</body>
+</html>

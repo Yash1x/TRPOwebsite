@@ -1,0 +1,29 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Портфолио — главная{% endblock %}
+
+{% block content %}
+<h1>Портфолио</h1>
+
+<div class="categories-tabs">
+    {% for category in categories %}
+        <button class="category-tab" data-category="{{ category.id }}">{{ category.name }}</button>
+    {% endfor %}
+</div>
+
+{% for category in categories %}
+    <section class="category-block" id="cat-{{ category.id }}">
+        <h2>{{ category.name }}</h2>
+        <div class="works-grid">
+            {% for work in works %}
+                {% if work.category_id == category.id %}
+                    <a href="{{ work.get_absolute_url }}" class="work-card">
+                        <img src="{{ work.preview_image.url }}" alt="{{ work.title }}">
+                        <div class="work-title">{{ work.title }}</div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+{% endfor %}
+{% endblock %}

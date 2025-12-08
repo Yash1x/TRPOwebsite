@@ -1,0 +1,26 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}{{ work.title }} — портфолио{% endblock %}
+
+{% block content %}
+<article class="work-detail">
+    <h1>{{ work.title }}</h1>
+    <p class="work-category">{{ work.category.name }}</p>
+
+    <div class="work-gallery">
+        <img src="{{ work.preview_image.url }}" alt="{{ work.title }}" class="work-main-image">
+
+        {% if work.images.all %}
+            <div class="work-thumbs">
+                {% for image in work.images.all %}
+                    <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="work-description">
+        {{ work.description|linebreaks }}
+    </div>
+</article>
+{% endblock %}

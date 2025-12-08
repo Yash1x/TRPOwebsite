@@ -1,0 +1,28 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Услуги дизайнера{% endblock %}
+
+{% block content %}
+<h1>Услуги</h1>
+
+<div class="services-list">
+    {% for service in services %}
+        <div class="service-card">
+            <h2>{{ service.title }}</h2>
+            <p>{{ service.short_description }}</p>
+
+            {% if service.price_from %}
+                <p class="service-price">от {{ service.price_from }} ₽</p>
+            {% endif %}
+
+            {% if service.description %}
+                <div class="service-details">
+                    {{ service.description|linebreaks }}
+                </div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Услуги пока не добавлены.</p>
+    {% endfor %}
+</div>
+{% endblock %}
