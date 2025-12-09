@@ -1,46 +1,26 @@
 {% extends 'gallery/base.html' %}
 
-{% block title %}{{ work.title }} — проект{% endblock %}
+{% block title %}{{ work.title }} — портфолио{% endblock %}
 
 {% block content %}
 <article class="work-detail">
-    <header class="work-detail__header">
-        <p class="work-detail__category">{{ work.category.name }}</p>
-        <h1 class="work-detail__title">{{ work.title }}</h1>
-        {% if work.created_at %}
-            <p class="work-detail__meta">Год реализации: {{ work.created_at|date:"Y" }}</p>
+    <h1>{{ work.title }}</h1>
+    <p class="work-category">{{ work.category.name }}</p>
+
+    <div class="work-gallery">
+        <img src="{{ work.preview_image.url }}" alt="{{ work.title }}" class="work-main-image">
+
+        {% if work.images.all %}
+            <div class="work-thumbs">
+                {% for image in work.images.all %}
+                    <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% endfor %}
+            </div>
         {% endif %}
-    </header>
+    </div>
 
-    <div class="work-detail__body">
-        <div class="work-detail__media">
-            <div class="work-detail__main-image-wrap">
-                <img src="{{ work.preview_image.url }}"
-                     alt="{{ work.title }}"
-                     class="work-detail__main-image">
-            </div>
-
-            {% if work.images.all %}
-                <div class="work-detail__thumbs">
-                    {% for image in work.images.all %}
-                        <img src="{{ image.image.url }}"
-                             alt="{{ image.caption }}"
-                             class="work-detail__thumb">
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="work-detail__text">
-            <h2 class="work-detail__section-title">Описание проекта</h2>
-            <div class="work-detail__description">
-                {{ work.description|linebreaks }}
-            </div>
-
-            <a href="{% url 'home' %}" class="button-link">
-                ← Вернуться к портфолио
-            </a>
-        </div>
+    <div class="work-description">
+        {{ work.description|linebreaks }}
     </div>
 </article>
 {% endblock %}
