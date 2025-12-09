@@ -1,29 +1,88 @@
 {% extends 'gallery/base.html' %}
 
-{% block title %}Портфолио — главная{% endblock %}
+{% block title %}Портфолио — работы{% endblock %}
 
 {% block content %}
-<h1>Портфолио</h1>
+<section class="page-intro">
+    <h1 class="page-title">Портфолио</h1>
+    <p class="page-subtitle">
+        Подборка работ по логотипам, веб-дизайну и айдентике.
+        Клик по карточке открывает проект целиком.
+    </p>
+</section>
 
-<div class="categories-tabs">
-    {% for category in categories %}
-        <button class="category-tab" data-category="{{ category.id }}">{{ category.name }}</button>
-    {% endfor %}
-</div>
+<section class="portfolio">
+    <div class="portfolio__tabs">
+        <button class="category-tab category-tab--active" data-category="all">
+            Все работы
+        </button>
+        {% for category in categories %}
+            <button class="category-tab" data-category="{{ category.id }}">
+                {{ category.name }}
+            </button>
+        {% endfor %}
+    </div>
 
-{% for category in categories %}
-    <section class="category-block" id="cat-{{ category.id }}">
-        <h2>{{ category.name }}</h2>
-        <div class="works-grid">
-            {% for work in works %}
-                {% if work.category_id == category.id %}
-                    <a href="{{ work.get_absolute_url }}" class="work-card">
-                        <img src="{{ work.preview_image.url }}" alt="{{ work.title }}">
-                        <div class="work-title">{{ work.title }}</div>
-                    </a>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </section>
-{% endfor %}
+    <div class="portfolio__groups">
+        {% for category in categories %}
+            <section class="category-block" data-category="{{ category.id }}">
+                <header class="category-block__header">
+                    <h2 class="category-block__title">{{ category.name }}</h2>
+                    {% if category.description %}
+                        <p class="category-block__desc">{{ category.description }}</p>
+                    {% endif %}
+                </header>
+
+                <div class="works-grid">
+                    {% for work in works %}
+                        {% if work.category_id == category.id %}
+                            <a href="{{ work.get_absolute_url }}" class="work-card">
+                                <div class="work-card__image-wrap">
+                                    <img src="{{ work.preview_image.url }}"
+                                         alt="{{ work.title }}"
+                                         class="work-card__image">
+                                </div>
+                                <div class="work-card__body">
+                                    <div class="work-card__title">{{ work.title }}</div>
+                                    {% if work.created_at %}
+                                        <div class="work-card__meta">
+                                            {{ work.created_at|date:"Y" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('.category-tab');
+    const blocks = document.querySelectorAll('.category-block');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const cat = tab.getAttribute('data-category');
+
+            // активное состояние вкладок
+            tabs.forEach(t => t.classList.remove('category-tab--active'));
+            tab.classList.add('category-tab--active');
+
+            // фильтрация блоков категорий
+            blocks.forEach(block => {
+                const blockCat = block.getAttribute('data-category');
+                if (cat === 'all' || blockCat === cat) {
+                    block.style.display = '';
+                } else {
+                    block.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %}

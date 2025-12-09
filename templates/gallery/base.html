@@ -1,28 +1,45 @@
 {% load static %}
+<!doctype html>
 <html lang="ru">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Портфолио дизайнера{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 <header class="site-header">
-    <div class="container">
-        <div class="logo">Designer Name</div>
+    <div class="shell site-header__inner">
+        <div class="brand">
+            <div class="brand__name">Designer Name</div>
+            <div class="brand__role">Графический дизайнер</div>
+        </div>
+
+        {% with url_name=request.resolver_match.url_name %}
         <nav class="main-nav">
-            <a href="{% url 'home' %}">Работы</a>
-            <a href="{% url 'services' %}">Услуги</a>
+            <a href="{% url 'home' %}"
+               class="main-nav__link {% if url_name == 'home' or url_name == 'work_detail' %}main-nav__link--active{% endif %}">
+                Работы
+            </a>
+            <a href="{% url 'services' %}"
+               class="main-nav__link {% if url_name == 'services' %}main-nav__link--active{% endif %}">
+                Услуги
+            </a>
         </nav>
+        {% endwith %}
     </div>
 </header>
 
-<main class="container">
-    {% block content %}{% endblock %}
+<main class="site-main">
+    <div class="shell">
+        {% block content %}{% endblock %}
+    </div>
 </main>
 
 <footer class="site-footer">
-    <div class="container">
-        © {{ now|date:"Y" }} Designer Name
+    <div class="shell site-footer__inner">
+        {% now "Y" as current_year %}
+        <span>© {{ current_year }} Designer Name. Все права защищены.</span>
     </div>
 </footer>
 </body>
