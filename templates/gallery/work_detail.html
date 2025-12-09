@@ -19,16 +19,6 @@
                      alt="{{ work.title }}"
                      class="work-detail__main-image">
             </div>
-
-            {% if work.images.all %}
-                <div class="work-detail__thumbs">
-                    {% for image in work.images.all %}
-                        <img src="{{ image.image.url }}"
-                             alt="{{ image.caption }}"
-                             class="work-detail__thumb">
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div>
 
         <div class="work-detail__text">
