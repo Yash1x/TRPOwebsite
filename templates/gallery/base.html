@@ -9,26 +9,43 @@
 </head>
 <body>
 <header class="site-header">
-    <div class="shell site-header__inner">
-        <div class="brand">
-            <div class="brand__name">Designer Name</div>
-            <div class="brand__role">Графический дизайнер</div>
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="{% url 'home' %}">Designer Name</a>
+            <span class="logo-subtitle">Графический дизайнер</span>
         </div>
 
-        {% with url_name=request.resolver_match.url_name %}
         <nav class="main-nav">
-            <a href="{% url 'home' %}"
-               class="main-nav__link {% if url_name == 'home' or url_name == 'work_detail' %}main-nav__link--active{% endif %}">
+            <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}nav-link active{% else %}nav-link{% endif %}">
                 Работы
             </a>
-            <a href="{% url 'services' %}"
-               class="main-nav__link {% if url_name == 'services' %}main-nav__link--active{% endif %}">
+            <a href="{% url 'services' %}" class="{% if request.resolver_match.url_name == 'services' %}nav-link active{% else %}nav-link{% endif %}">
                 Услуги
             </a>
+            <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}nav-link active{% else %}nav-link{% endif %}">
+                О нас
+            </a>
+            <a href="{% url 'help' %}" class="{% if request.resolver_match.url_name == 'help' %}nav-link active{% else %}nav-link{% endif %}">
+                Помощь
+            </a>
+
+            {% if request.user.is_authenticated and request.user.is_staff %}
+                <a href="{% url 'work_add' %}" class="nav-link nav-link--accent">Добавить работу</a>
+            {% endif %}
         </nav>
-        {% endwith %}
+
+        <div class="auth-block">
+            {% if request.user.is_authenticated %}
+                <span class="auth-user">Привет, {{ request.user.username }}</span>
+                <a href="{% url 'logout' %}" class="auth-link">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="auth-link">Войти</a>
+                <a href="{% url 'register' %}" class="auth-link auth-link--primary">Регистрация</a>
+            {% endif %}
+        </div>
     </div>
 </header>
+
 
 <main class="site-main">
     <div class="shell">

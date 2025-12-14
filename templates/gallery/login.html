@@ -1,0 +1,21 @@
+{% extends "gallery/base.html" %}
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<section class="page-section page-section--centered">
+    <h1 class="page-title">Вход</h1>
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-field">
+            <label for="{{ form.username.id_for_label }}">Логин</label>
+            {{ form.username }}
+        </div>
+        <div class="form-field">
+            <label for="{{ form.password.id_for_label }}">Пароль</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+</section>
+{% endblock %}
