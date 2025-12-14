@@ -12,6 +12,17 @@
 
 ### 1. Клонировать репозиторий
 
-```bash
-git clone https://github.com/Yash1x/TRPOwebsite
-cd TRPOwebsite
+``` bash
+git clone ...
+
+python -m venv .venv
+
+source .venv/Scripts/activate (для Windows — через Scripts\activate),
+
+pip install -r requirements.txt
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+python manage.py runserver.
