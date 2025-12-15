@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
+
 
 
 class Category(models.Model):
@@ -71,7 +73,12 @@ class WorkImage(models.Model):
 
 class Service(models.Model):
     title = models.CharField("Название услуги", max_length=200)
-    slug = models.SlugField("Слаг", unique=True)
+    slug = models.SlugField(
+        max_length=200,
+        unique=True,
+        blank=True,  # важно: можно не заполнять в форме
+        verbose_name="Слаг",
+    )
     short_description = models.CharField("Краткое описание", max_length=255)
     description = models.TextField("Подробное описание", blank=True)
     price_from = models.DecimalField(
@@ -84,6 +91,21 @@ class Service(models.Model):
     is_active = models.BooleanField("Активна", default=True)
     order = models.PositiveIntegerField("Порядок", default=0)
 
+    def save(self, *args, **kwargs):
+        # если slug не задан — генерируем из title
+        if not self.slug:
+            base_slug = slugify(self.title) or "service"
+            slug = base_slug
+            counter = 1
+
+            # гарантируем уникальность
+            while type(self).objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                counter += 1
+                slug = f"{base_slug}-{counter}"
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
     class Meta:
         ordering = ['order', 'title']
         verbose_name = "Услуга"

@@ -9,43 +9,53 @@
 </head>
 <body>
 <header class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
         <div class="logo">
             <a href="{% url 'home' %}">Designer Name</a>
             <span class="logo-subtitle">Графический дизайнер</span>
         </div>
 
         <nav class="main-nav">
-            <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}nav-link active{% else %}nav-link{% endif %}">
+            <a href="{% url 'home' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
                 Работы
             </a>
-            <a href="{% url 'services' %}" class="{% if request.resolver_match.url_name == 'services' %}nav-link active{% else %}nav-link{% endif %}">
+            <a href="{% url 'services' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}">
                 Услуги
             </a>
-            <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}nav-link active{% else %}nav-link{% endif %}">
+            <a href="{% url 'about' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
                 О нас
             </a>
-            <a href="{% url 'help' %}" class="{% if request.resolver_match.url_name == 'help' %}nav-link active{% else %}nav-link{% endif %}">
+            <a href="{% url 'help' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}">
                 Помощь
             </a>
 
             {% if request.user.is_authenticated and request.user.is_staff %}
-                <a href="{% url 'work_add' %}" class="nav-link nav-link--accent">Добавить работу</a>
+                <div class="admin-links">
+                    <a href="{% url 'work_add' %}" class="admin-link">+ Работа</a>
+                    <a href="{% url 'category_add' %}" class="admin-link">+ Категория</a>
+                    <a href="{% url 'service_add' %}" class="admin-link">+ Услуга</a>
+                </div>
             {% endif %}
         </nav>
 
         <div class="auth-block">
             {% if request.user.is_authenticated %}
                 <span class="auth-user">Привет, {{ request.user.username }}</span>
-                <a href="{% url 'logout' %}" class="auth-link">Выйти</a>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="auth-link auth-link--button">Выйти</button>
+                </form>
             {% else %}
                 <a href="{% url 'login' %}" class="auth-link">Войти</a>
-                <a href="{% url 'register' %}" class="auth-link auth-link--primary">Регистрация</a>
+                <a href="{% url 'register' %}" class="auth-link">Регистрация</a>
             {% endif %}
         </div>
     </div>
 </header>
-
 
 <main class="site-main">
     <div class="shell">

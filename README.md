@@ -13,7 +13,7 @@
 ### 1. Клонировать репозиторий
 
 ``` bash
-git clone ...
+pygit clone ...
 
 python -m venv .venv
 

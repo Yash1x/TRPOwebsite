@@ -2,6 +2,10 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+from django.views import View
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 
 from .models import Work, Category, Service
 
@@ -91,3 +95,17 @@ class WorkCreateView(StaffRequiredMixin, CreateView):
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('home')
+
+class ServiceCreateView(StaffRequiredMixin, CreateView):
+    model = Service
+    fields = ['title', 'description', 'price_from', 'is_active', 'order']
+    template_name = 'gallery/service_form.html'
+    success_url = reverse_lazy('services')
+
+class ContentDashboardView(StaffRequiredMixin, TemplateView):
+    template_name = 'gallery/content_dashboard.html'

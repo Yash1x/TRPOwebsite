@@ -1,24 +1,70 @@
 {% extends "gallery/base.html" %}
-{% block title %}Новая работа{% endblock %}
+
+{% block title %}Добавить работу{% endblock %}
 
 {% block content %}
-<section class="page-section page-section--centered">
-    <h1 class="page-title">Добавить работу</h1>
-    <form method="post" enctype="multipart/form-data" class="auth-form">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-field">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <div class="form-help">{{ field.help_text }}</div>
-                {% endif %}
-                {% if field.errors %}
-                    <div class="form-error">{{ field.errors }}</div>
-                {% endif %}
+<section class="form-page">
+    <h1 class="form-title">Добавить работу</h1>
+    <p class="form-subtitle">
+        Заполните информацию о проекте. Превью будет отображаться в портфолио.
+    </p>
+
+    <div class="form-card">
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
             </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-    </form>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <label for="{{ form.title.id_for_label }}">Название работы</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.slug.id_for_label }}">Слаг</label>
+                {{ form.slug }}
+                {{ form.slug.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.category.id_for_label }}">Категория</label>
+                {{ form.category }}
+                {{ form.category.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.preview_image.id_for_label }}">Превью</label>
+                {{ form.preview_image }}
+                {{ form.preview_image.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.description.id_for_label }}">Описание</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.created_at.id_for_label }}">Дата создания</label>
+                {{ form.created_at }}
+                {{ form.created_at.errors }}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.is_published.id_for_label }}">Опубликовано</label>
+                {{ form.is_published }}
+                {{ form.is_published.errors }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Сохранить</button>
+            </div>
+        </form>
+    </div>
 </section>
 {% endblock %}
