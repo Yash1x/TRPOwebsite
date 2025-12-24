@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load variables from .env if present (works both locally and in Docker)
+load_dotenv(BASE_DIR / '.env')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -25,12 +31,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0$0gv7dz(i^z32*+lvo23g=#yqh8ri%q00@33gp*^azsjn4#)0'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', '1') in ('1','true','True','yes','YES')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
 
 
 # Application definition
@@ -82,14 +88,13 @@ WSGI_APPLICATION = 'portfolio_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'trpo_portfolio',
-        'USER': 'trpo_user',
-        'PASSWORD': 'kokoblik228',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'trpo_portfolio'),
+        'USER': os.getenv('POSTGRES_USER', 'trpo_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'trpo_password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
-
 
 
 # Password validation
@@ -126,7 +131,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
