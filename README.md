@@ -10,35 +10,6 @@
 - Добавление категорий и работ через веб-формы (для авторизованных сотрудников).
 - Статика и медиа (превью и изображения работ).
 
-## Локальный запуск без Docker
-
-1) Клонировать репозиторий:
-```bash
-git clone <URL>
-cd TRPOwebsite-main
-```
-
-2) Создать и активировать venv:
-```bash
-python -m venv .venv
-# Windows PowerShell
-.\.venv\Scripts\Activate.ps1
-# Windows CMD
-.\.venv\Scripts\activate.bat
-```
-
-3) Установить зависимости:
-```bash
-pip install -r requirements.txt
-```
-
-4) Настроить доступ к PostgreSQL (см. `.env.example`) и выполнить миграции:
-```bash
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
-
 ## Запуск через Docker (Django + Postgres)
 
 Перед запуском на компьютере должны быть установлены:
@@ -71,11 +42,10 @@ cd TRPOwebsite
 Его нужно скопировать в .env.
 
 Windows (PowerShell)
-powershell
-```copy .env.example .env```
-macOS/Linux
-bash
-```cp .env.example .env```
+```powershell
+copy .env.example .env
+```
+
 Откройте .env и проверьте, что там есть настройки Django и PostgreSQL.
 Важно: в Docker-режиме POSTGRES_HOST должен быть равен db (это имя сервиса PostgreSQL в docker-compose.yml), а не localhost.
 
