@@ -40,12 +40,15 @@ RUN set -eux; \
 
 # Install Python deps
 COPY requirements.txt /app/requirements.txt
-ENV PIP_DEFAULT_TIMEOUT=120 \
+ENV PIP_DEFAULT_TIMEOUT=300 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1
 
-RUN python -m pip install --upgrade pip --retries 10 --timeout 120 \
-    && python -m pip install --retries 10 --timeout 120 -r /app/requirements.txt
+RUN python -m pip install --upgrade pip --retries 15 --timeout 300 \
+ && python -m pip install --retries 15 --timeout 300 \
+    -i https://pypi.org/simple \
+    --extra-index-url https://pypi.python.org/simple \
+    -r /app/requirements.txt
 
 # Copy project
 COPY . /app
